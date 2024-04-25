@@ -8,7 +8,9 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -25,6 +27,11 @@ import com.example.heartsteel.ui.theme.Sizes
 @ExperimentalFoundationApi
 @Composable
 fun SearchScreen(paddingValues: PaddingValues = PaddingValues()) {
+
+    val (value,setValue) = rememberSaveable {
+        mutableStateOf("")
+    }
+
     val categories = remember {
         DataProvider.categoriesBy(14)
     }
@@ -66,11 +73,13 @@ fun SearchScreen(paddingValues: PaddingValues = PaddingValues()) {
         SearchBar(
             modifier = Modifier
                 .padding(Sizes.MEDIUM)
-                .height(50.dp)
+                .height(60.dp)
                 .clickableResize {
 
                 },
-            title = "Artists,songs,or podcasts"
+            onValueChange = setValue,
+            value = value,
+            placeholder = "search"
         )
     }
 }

@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +25,9 @@ import com.example.heartsteel.ui.theme.Sizes.SMALL
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    title: String = "Title",
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder:String,
 ) {
     Row(
         modifier = modifier
@@ -39,14 +44,18 @@ fun SearchBar(
                 .size(40.dp)
                 .padding(10.dp)
         )
-        TextTitle(
+        OutlinedTextField(
+            value= value,
+            onValueChange = onValueChange,
             modifier = Modifier
                 .padding(horizontal = DEFAULT)
-                .weight(1f),
-            text = title,
-            color = Color.DarkGray,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Bold
+                .weight(2f),
+
+            placeholder = { Text(placeholder)},
+            textStyle = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
+            )
         )
     }
 }
@@ -54,5 +63,9 @@ fun SearchBar(
 @Preview
 @Composable
 fun SearchBarPreview() {
-    SearchBar()
+    SearchBar(
+        value = "",
+        onValueChange = {},
+        placeholder = "",
+    )
 }

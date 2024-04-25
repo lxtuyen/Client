@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -120,6 +118,7 @@ fun AlternativeLoginOptions(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Or Sign in With",color = Color.White)
+        Spacer(Modifier.height(defaultPadding))
         Row(horizontalArrangement = Arrangement.SpaceEvenly) {
             iconList.forEachIndexed { index, iconResId ->
                 Icon(
@@ -130,9 +129,9 @@ fun AlternativeLoginOptions(
                         .clickable {
                             onIconClick(index)
                         }.clip(CircleShape),
-                    tint = Color.White
+                    tint = Color.Unspecified
                 )
-                Spacer(Modifier.width(defaultPadding))
+                //Spacer(Modifier.width(defaultPadding))
             }
         }
         Spacer(Modifier.height(itemSpacing))

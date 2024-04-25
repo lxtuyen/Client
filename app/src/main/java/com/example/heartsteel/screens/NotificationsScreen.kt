@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,11 +20,12 @@ import androidx.compose.ui.unit.dp
 import com.example.heartsteel.R
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.TopBar
+import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.repository.DataProvider
 import com.example.heartsteel.tools.Ext.offsetY
 
 @Composable
-fun NotificationsScreen(paddingValues: PaddingValues = PaddingValues()) {
+fun NotificationsScreen(paddingValues: PaddingValues = PaddingValues(),router: Router? = null) {
     val contentHeight = 150.dp
     val scrollState = rememberLazyListState()
     val offsetY = scrollState.offsetY(contentHeight)
@@ -39,9 +39,14 @@ fun NotificationsScreen(paddingValues: PaddingValues = PaddingValues()) {
     }
     val chipSelected = chipState.intValue != -1
     val chips = remember { DataProvider.tags() }
+
+    val goBack: () -> Unit = {
+        router?.goBack()
+    }
+
     TopBar(
         navigationIcon = {
-            IconBtn(resIcon = R.drawable.ic_left)
+            IconBtn(resIcon = R.drawable.ic_left, onClick = goBack )
         },
         title = {
             Text(
@@ -79,19 +84,19 @@ fun NotificationsScreen(paddingValues: PaddingValues = PaddingValues()) {
                     if (chipSelected) {
                         item {
                             BorderBtn(modifier = Modifier.padding(end = 8.dp)) {
-                                chipState.value = -1
+                                chipState.intValue = -1
                             }
                         }
                         item {
-                            val selectedChip = chips[chipState.value]
+                            val selectedChip = chips[chipState.intValue]
                             ChipTag(selected = true, text = selectedChip) {
-                                chipState.value = -1
+                                chipState.intValue = -1
                             }
                         }
                     } else {
                         itemsIndexed(chips) { index, chip ->
                             ChipTag(modifier = Modifier.padding(end = 8.dp), text = chip) {
-                                chipState.value = index
+                                chipState.intValue = index
                             }
                         }
                     }

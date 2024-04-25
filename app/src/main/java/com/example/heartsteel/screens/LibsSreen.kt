@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -37,7 +36,6 @@ import com.example.heartsteel.ui.theme.Active
 import com.example.heartsteel.ui.theme.Primary80
 import com.example.heartsteel.ui.theme.Secondary
 import com.example.heartsteel.ui.theme.White
-import kotlinx.coroutines.launch
 import androidx.compose.material3.ModalBottomSheet
 
 @ExperimentalMaterial3Api
@@ -65,21 +63,12 @@ fun LibsScreen(
     val styleState = remember {
         mutableStateOf(true)
     }
-    var isOpen = remember {
-        mutableStateOf(false)
-    }
+    val isModalBottomSheetVisible = remember { mutableStateOf(false) }
+
     val isGridStyle = styleState.value
-    val modalBottomSheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     val showFilter: () -> Unit = {
-        scope.launch {
-            if (modalBottomSheetState.isVisible) {
-                modalBottomSheetState.hide()
-            } else {
-                modalBottomSheetState.show()
-            }
-        }
+        isModalBottomSheetVisible.value = !isModalBottomSheetVisible.value
     }
 
     Column {
@@ -177,7 +166,7 @@ fun LibsScreen(
             if (!isGridStyle) {
                 itemsIndexed(tracks) { index, person ->
                     val round: Dp? = if (index % 4 == 0) null else 10.dp
-                    CardRow(60.dp, round = round, roundPercent = 100, item = person)
+                    CardRow(60.dp, round = round, roundPercent = 100, item = person){ showFilter() }
                 }
                 item {
                     Row(
@@ -233,32 +222,33 @@ fun LibsScreen(
                 }
             } else {
                 item {
-                    GridContent(items = tracks, goAddPersons)
+                    GridContent(items = tracks, goAddPersons, showFilter)
                 }
             }
         }
     }
+    if (isModalBottomSheetVisible.value) {
         ModalBottomSheet(
             onDismissRequest = { showFilter() },
             modifier = Modifier.fillMaxWidth(),
             containerColor = Secondary,
             scrimColor = Primary80,
-            sheetState = modalBottomSheetState
         ) {
             SheetContent()
         }
+    }
 }
 @Composable
-fun GridContent(items: List<Music>, onClick: () -> Unit) {
+fun GridContent(items: List<Music>, onClickAdd: () -> Unit,onClickView: () -> Unit ) {
     VerticalGrid {
         items.forEachIndexed { index, music ->
             val round: Dp? = if (index % 4 == 0) null else 10.dp
-            CardColumn(145.dp, round = round, roundPercent = 100, item = music)
+            CardColumn(145.dp, round = round, roundPercent = 100, item = music){ onClickView() }
         }
         Column(
             modifier = Modifier
                 .clickableResize {
-                    onClick()
+                    onClickAdd()
                 },
             horizontalAlignment = CenterHorizontally
         ) {
@@ -283,7 +273,7 @@ fun GridContent(items: List<Music>, onClick: () -> Unit) {
         Column(
             modifier = Modifier
                 .clickableResize {
-                    onClick()
+                    onClickAdd()
                 },
             horizontalAlignment = CenterHorizontally
         ) {

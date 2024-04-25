@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.heartsteel.R
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.TopBar
+import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.tools.Ext
 import com.example.heartsteel.tools.Ext.gradient
 import com.example.heartsteel.tools.Ext.round
@@ -30,9 +31,12 @@ const val DEFAULT_DESCRIPTION =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 @Composable
-fun PlayerFullScreen() {
+fun PlayerFullScreen(router: Router? = null) {
     val scrollState = rememberScrollState()
     val sliderPosition = remember { mutableFloatStateOf(0f) }
+    val goBack: () -> Unit = {
+        router?.goBack()
+    }
     Column(
         Modifier
             .fillMaxSize()
@@ -44,7 +48,7 @@ fun PlayerFullScreen() {
     ) {
         TopBar(
             navigationIcon = {
-                IconBtn(resIcon = R.drawable.ic_down)
+                IconBtn(resIcon = R.drawable.ic_down, onClick= goBack)
             },
             title = {
                 Column(

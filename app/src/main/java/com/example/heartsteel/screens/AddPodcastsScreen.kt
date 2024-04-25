@@ -9,7 +9,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +27,6 @@ import com.example.heartsteel.tools.Ext
 import com.example.heartsteel.tools.Ext.color
 import com.example.heartsteel.tools.Ext.gradient
 import com.example.heartsteel.tools.Ext.offsetY
-import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.tools.Ext.round
 import com.example.heartsteel.ui.theme.Sizes
 import com.example.heartsteel.ui.theme.Primary30
@@ -33,6 +34,9 @@ import com.example.heartsteel.ui.theme.Primary30
 @ExperimentalFoundationApi
 @Composable
 fun AddPodcastsScreen() {
+    val (value,setValue) = rememberSaveable {
+        mutableStateOf("")
+    }
     val podcasts = remember {
         DataProvider.itemsBy(5, 20)
     }
@@ -59,8 +63,10 @@ fun AddPodcastsScreen() {
             SearchBar(
                 modifier = Modifier
                     .padding(Sizes.MEDIUM)
-                    .height(50.dp)
-                    .clickableResize {}
+                    .height(60.dp),
+                onValueChange = setValue,
+                value = value,
+                placeholder = "search"
             )
         }
 
