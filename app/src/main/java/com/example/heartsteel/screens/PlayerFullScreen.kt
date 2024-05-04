@@ -35,7 +35,7 @@ fun PlayerFullScreen(router: Router? = null) {
     val scrollState = rememberScrollState()
     val sliderPosition = remember { mutableFloatStateOf(0f) }
     val goBack: () -> Unit = {
-        router?.goBack()
+        router?.goHome()
     }
     Column(
         Modifier

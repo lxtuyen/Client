@@ -22,7 +22,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,23 +37,30 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.heartsteel.R
 import com.example.heartsteel.components.TextTitle
+import com.example.heartsteel.navigation.Router
+import com.example.heartsteel.viewModels.auth.SignInViewModel
+import kotlinx.coroutines.launch
 
 val defaultPadding = 16.dp
 val itemSpacing = 8.dp
 
 @Composable
-fun LoginScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit){
-    val (gmail, setGmail) = rememberSaveable {
+fun LoginScreen(onSignUpClick: () -> Unit, viewModel: SignInViewModel = hiltViewModel(),router: Router? = null){
+    val (email, setEmail) = rememberSaveable {
         mutableStateOf("")
     }
     val (password, setPassword) = rememberSaveable {
         mutableStateOf("")
     }
-    val isFieldsEmpty = gmail.isNotEmpty() && password.isNotEmpty()
+    val isFieldsEmpty = email.isNotEmpty() && password.isNotEmpty()
 
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val state = viewModel.signInState.collectAsState(initial = null)
+
     Column(
             modifier = Modifier.fillMaxSize()
                 .padding(defaultPadding),
@@ -62,8 +72,8 @@ fun LoginScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit){
                 .align(alignment = Alignment.Start)
         )
         LoginTextField(
-            value = gmail,
-            onValueChange = setGmail,
+            value = email,
+            onValueChange = setEmail,
             modifier = Modifier.fillMaxWidth(),
             leadingIcon = Icons.Default.Person,
             labelText = "Gmail",
@@ -80,7 +90,13 @@ fun LoginScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit){
         )
         Spacer(Modifier.height(itemSpacing))
         Button(
-            onClick = onLoginClick,
+            onClick =  {
+                scope.launch {
+                    viewModel.loginUser(email, password )
+                    router?.goHome()
+                    Toast.makeText(context,"Success Login",Toast.LENGTH_SHORT).show()
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             enabled = isFieldsEmpty,
         ) {
@@ -99,7 +115,27 @@ fun LoginScreen(onLoginClick: () -> Unit, onSignUpClick: () -> Unit){
             modifier = Modifier.fillMaxSize()
                 .wrapContentSize(align = Alignment.TopCenter)
         )
-
+        LaunchedEffect(key1 = state.value?.isSuccess )
+        {
+            scope.launch {
+                if(state.value?.isSuccess?.isNotEmpty()==true)
+                {
+                    val success = state.value?.isSuccess
+                    Toast.makeText(context,"$success",Toast.LENGTH_SHORT).show()
+                    router?.goHome()
+                }
+            }
+        }
+        LaunchedEffect(key1 = state.value?.isError )
+        {
+            scope.launch {
+                if(state.value?.isError?.isNotEmpty()==true)
+                {
+                    val error = state.value?.isError
+                    Toast.makeText(context,"$error",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
 
@@ -153,5 +189,5 @@ fun AlternativeLoginOptions(
 @Preview
 @Composable
 fun PrevLoginScreen() {
-    LoginScreen({}, {})
+    LoginScreen({})
 }

@@ -59,7 +59,7 @@ fun SearchScreen(paddingValues: PaddingValues = PaddingValues()) {
         }
     }
     Column(
-        modifier = Modifier.offset(y = -offsetY)
+        modifier = Modifier.offset(y = offsetY.coerceIn(0.dp, contentHeight))
     ) {
         Box(
             modifier = Modifier
@@ -68,7 +68,7 @@ fun SearchScreen(paddingValues: PaddingValues = PaddingValues()) {
                 .fillMaxWidth(),
             contentAlignment = Alignment.BottomStart
         ) {
-            TextTitle(text = "Search")
+            TextTitle(text = "Tìm Kiếm")
         }
         SearchBar(
             modifier = Modifier
@@ -79,7 +79,7 @@ fun SearchScreen(paddingValues: PaddingValues = PaddingValues()) {
                 },
             onValueChange = setValue,
             value = value,
-            placeholder = "search"
+            placeholder = "Tìm Kiếm"
         )
     }
 }

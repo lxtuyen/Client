@@ -41,7 +41,7 @@ fun NotificationsScreen(paddingValues: PaddingValues = PaddingValues(),router: R
     val chips = remember { DataProvider.tags() }
 
     val goBack: () -> Unit = {
-        router?.goBack()
+        router?.goHome()
     }
 
     TopBar(

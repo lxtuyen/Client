@@ -1,4 +1,4 @@
-package com.example.heartsteel.model
+package com.example.heartsteel.domain.model
 
 import android.os.Parcelable
 import com.example.heartsteel.R

@@ -85,7 +85,7 @@ fun NavigationContainer(
             PlayerFullScreen()
         }
         composable(Screen.Login.route) {
-            LoginScreen({},{})
+            LoginScreen({})
         }
     }
 }

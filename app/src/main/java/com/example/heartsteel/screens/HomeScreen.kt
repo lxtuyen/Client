@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.VerticalGrid
-import com.example.heartsteel.model.Music
+import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.repository.DataProvider
 import com.example.heartsteel.ui.theme.Sizes

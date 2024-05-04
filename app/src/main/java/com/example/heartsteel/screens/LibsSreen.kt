@@ -25,7 +25,7 @@ import com.example.heartsteel.R
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.TopBar
 import com.example.heartsteel.components.core.VerticalGrid
-import com.example.heartsteel.model.Music
+import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.repository.DataProvider
 import com.example.heartsteel.tools.Ext.clickableResize
@@ -239,7 +239,7 @@ fun LibsScreen(
     }
 }
 @Composable
-fun GridContent(items: List<Music>, onClickAdd: () -> Unit,onClickView: () -> Unit ) {
+fun GridContent(items: List<Music>, onClickAdd: () -> Unit, onClickView: () -> Unit ) {
     VerticalGrid {
         items.forEachIndexed { index, music ->
             val round: Dp? = if (index % 4 == 0) null else 10.dp
