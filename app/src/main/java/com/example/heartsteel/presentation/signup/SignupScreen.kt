@@ -34,7 +34,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.heartsteel.components.LoginTextField
 import com.example.heartsteel.components.TextTitle
 import com.example.heartsteel.navigation.Router
-import com.example.heartsteel.presentation.login.SignInViewModel
 import com.example.heartsteel.presentation.login.defaultPadding
 import com.example.heartsteel.presentation.login.itemSpacing
 import kotlinx.coroutines.launch
@@ -112,7 +111,7 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
         Button(
             onClick =  {
                 scope.launch {
-                    viewModel.registerUser(username,email)
+                    viewModel.registerUser(email,password,username)
                     router?.goLogin()
                     Toast.makeText(context,"Success Signup",Toast.LENGTH_SHORT).show()
                 }

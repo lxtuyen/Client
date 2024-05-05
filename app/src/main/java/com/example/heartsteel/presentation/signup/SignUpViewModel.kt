@@ -23,9 +23,9 @@ class SignUpViewModel @Inject constructor(
     val signUpState = _signUpState.receiveAsFlow()
 
     fun registerUser(
-        username: String,
         email: String,
         password: String,
+        username: String,
     ) = viewModelScope.launch {
         repository.registerUser(email,password)
             .collect { result ->
