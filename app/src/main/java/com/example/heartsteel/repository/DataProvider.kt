@@ -1,8 +1,8 @@
 package com.example.heartsteel.repository
 
 import com.example.heartsteel.R
-import com.example.heartsteel.model.Category
-import com.example.heartsteel.model.Music
+import com.example.heartsteel.domain.model.Category
+import com.example.heartsteel.domain.model.Music
 import kotlin.random.Random
 
 object DataProvider {

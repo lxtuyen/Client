@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "361688273655",
+    "firebase_url": "https://heartsteel-c5abc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "heartsteel-c5abc",
+    "storage_bucket": "heartsteel-c5abc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361688273655:android:31e2798ec9f16838e779f2",
+        "android_client_info": {
+          "package_name": "com.example.heartsteel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361688273655-0s6jjtuapeq64oejmnak9bm4ih8fmk8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeXvkfOZXz-V4IyHcHJLje15UMouapYjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361688273655-0s6jjtuapeq64oejmnak9bm4ih8fmk8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

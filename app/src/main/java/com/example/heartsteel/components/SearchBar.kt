@@ -52,6 +52,7 @@ fun SearchBar(
                 .weight(2f),
 
             placeholder = { Text(placeholder)},
+            singleLine = true,
             textStyle = TextStyle(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold

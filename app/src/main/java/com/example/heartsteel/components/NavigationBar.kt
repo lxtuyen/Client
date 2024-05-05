@@ -28,7 +28,7 @@ fun NavigationBar(
     }
     BottomNavigation(
         backgroundColor = Color.Transparent,
-        elevation = 0.dp
+        elevation = 0.dp,
     ) {
         tabs.forEach { item ->
             val targetRoute = item.route
@@ -37,7 +37,8 @@ fun NavigationBar(
                 icon = {
                     Icon(
                         painter = painterResource(id = item.icon),
-                        contentDescription = item.title
+                        contentDescription = item.title,
+                        tint = (if(selected)Color.White else Color.White.copy(0.4f))
                     )
                 },
                 label = {
@@ -46,11 +47,10 @@ fun NavigationBar(
                         maxLines = 1,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Center,
+                        color = (if(selected)Color.White else Color.White.copy(0.4f)),
                         onTextLayout = {}
                     )
                 },
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.White.copy(0.4f),
                 selected = selected,
                 onClick = { onRouteSelected(targetRoute) }
             )

@@ -13,5 +13,6 @@ interface Router {
     fun goHome()
     fun goBack()
     fun goLogin()
+    fun goSignup()
     fun <T : Any> getArgs(tag: String): T?
 }

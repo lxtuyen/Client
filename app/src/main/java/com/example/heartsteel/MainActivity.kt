@@ -8,16 +8,17 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.material3.ExperimentalMaterial3Api
-import com.example.heartsteel.screens.MainScreen
+import com.example.heartsteel.presentation.MainScreen
 import com.example.heartsteel.ui.theme.HeartsteelTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalMaterial3Api
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var backPressed = 0L
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

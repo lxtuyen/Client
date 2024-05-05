@@ -1,12 +1,11 @@
 package com.example.heartsteel.navigation
 
 import androidx.navigation.NavHostController
-import com.example.heartsteel.navigation.Routes.ROUTE_LOGIN
 import com.example.heartsteel.tools.Ext.putArgs
 
 class RouterImpl(
     private val navHostController: NavHostController,
-    private val startDestination: String = ROUTE_LOGIN
+    private val startDestination: String = Routes.ROUTE_LOGIN
 ) : Router {
 
     override fun goDetails(arg: Any?) {
@@ -36,6 +35,10 @@ class RouterImpl(
                 launchSingleTop = true
                 restoreState = true
             }
+
+        }
+        navHostController.apply {
+
         }
     }
 
@@ -55,6 +58,10 @@ class RouterImpl(
         navigate(Screen.Login)
     }
 
+    override fun goSignup() {
+        navigate(Screen.Signup)
+    }
+
     override fun goSplash() {
         navigate(Screen.Splash, true)
     }
@@ -72,7 +79,7 @@ class RouterImpl(
             navigate(screen.route) {
                 if (removeFromHistory) {
                     if (singleTop) {
-                        popUpTo(Screen.Home.route)
+                        popUpTo(Screen.Login.route)
                     } else {
                         popUpTo(0) {
                             saveState = false

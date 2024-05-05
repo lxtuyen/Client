@@ -10,17 +10,21 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.heartsteel.screens.AddPersonsScreen
-import com.example.heartsteel.screens.AddPodcastsScreen
-import com.example.heartsteel.screens.DetailsScreen
-import com.example.heartsteel.screens.HomeScreen
-import com.example.heartsteel.screens.LibsScreen
-import com.example.heartsteel.screens.LoginScreen
-import com.example.heartsteel.screens.NotificationsScreen
-import com.example.heartsteel.screens.PlayerFullScreen
-import com.example.heartsteel.screens.PremiumScreen
-import com.example.heartsteel.screens.SearchScreen
-import com.example.heartsteel.screens.SplashScreen
+import com.example.heartsteel.presentation.login.LoginScreen
+import com.example.heartsteel.presentation.SplashScreen
+import com.example.heartsteel.presentation.addPersons.AddPersonsScreen
+import com.example.heartsteel.presentation.addPodcasts.AddPodcastsScreen
+import com.example.heartsteel.presentation.detail.DetailsScreen
+import com.example.heartsteel.presentation.history.HistoryScreen
+import com.example.heartsteel.presentation.home.HomeScreen
+import com.example.heartsteel.presentation.libs.LibsScreen
+import com.example.heartsteel.presentation.notifications.NotificationsScreen
+import com.example.heartsteel.presentation.playerFull.PlayerFullScreen
+import com.example.heartsteel.presentation.premium.PremiumScreen
+import com.example.heartsteel.presentation.profile.ProfileScreen
+import com.example.heartsteel.presentation.search.SearchScreen
+import com.example.heartsteel.presentation.settings.SettingsScreen
+import com.example.heartsteel.presentation.signup.SignupScreen
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -32,8 +36,8 @@ fun NavigationContainer(
 ) {
     val startDestination = remember { mutableStateOf(Screen.Splash.route) }
     LaunchedEffect(startDestination) {
-        if (startDestination.value == Screen.Home.route) {
-            router.goHome()
+        if (startDestination.value == Screen.Login.route) {
+            router.goLogin()
         }
     }
     NavHost(
@@ -55,7 +59,7 @@ fun NavigationContainer(
         composable(Screen.Splash.route) {
             SplashScreen(
                 goBack = {
-                    startDestination.value = Screen.Home.route
+                    startDestination.value = Screen.Login.route
                 }
             )
         }
@@ -64,16 +68,16 @@ fun NavigationContainer(
         }
 
         composable(Screen.Notifications.route) {
-            NotificationsScreen(paddingValues)
+            NotificationsScreen(router, paddingValues)
         }
         composable(Screen.Settings.route) {
-            NotificationsScreen(paddingValues)
+            SettingsScreen()
         }
         composable(Screen.Profile.route) {
-            NotificationsScreen(paddingValues)
+            ProfileScreen()
         }
         composable(Screen.History.route) {
-            NotificationsScreen(paddingValues)
+            HistoryScreen()
         }
         composable(Screen.AddPodcasts.route) {
             AddPodcastsScreen()
@@ -85,7 +89,10 @@ fun NavigationContainer(
             PlayerFullScreen()
         }
         composable(Screen.Login.route) {
-            LoginScreen({},{})
+            LoginScreen(router)
+        }
+        composable(Screen.Signup.route) {
+            SignupScreen(router)
         }
     }
 }

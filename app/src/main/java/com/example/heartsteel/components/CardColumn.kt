@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.heartsteel.components.core.BaseColumn
-import com.example.heartsteel.model.Music
+import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.ui.theme.Sizes.MEDIUM
 

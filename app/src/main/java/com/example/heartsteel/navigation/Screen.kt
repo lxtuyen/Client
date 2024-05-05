@@ -7,6 +7,7 @@ import com.example.heartsteel.navigation.Routes.ROUTE_HOME
 import com.example.heartsteel.navigation.Routes.ROUTE_HOME_DETAILS
 import com.example.heartsteel.navigation.Routes.ROUTE_LIBS
 import com.example.heartsteel.navigation.Routes.ROUTE_LOGIN
+import com.example.heartsteel.navigation.Routes.ROUTE_SIGNUP
 import com.example.heartsteel.navigation.Routes.ROUTE_NOTIFICATION
 import com.example.heartsteel.navigation.Routes.ROUTE_PERSONS
 import com.example.heartsteel.navigation.Routes.ROUTE_PLAYER_FULL
@@ -33,12 +34,15 @@ object Routes {
     const val ROUTE_HISTORY = "ROUTE_HISTORY"
     const val ROUTE_PROFILE = "ROUTE_PROFILE"
     const val ROUTE_LOGIN = "ROUTE_LOGIN"
+    const val ROUTE_SIGNUP = "ROUTE_SIGNUP"
 
     val fullScreenRoutes = listOf(
         ROUTE_SPLASH,
         ROUTE_PERSONS,
         ROUTE_PODCASTS,
-        ROUTE_PLAYER_FULL
+        ROUTE_PLAYER_FULL,
+        ROUTE_LOGIN,
+        ROUTE_SIGNUP
     )
 }
 
@@ -66,6 +70,7 @@ sealed class Screen(
     data object Settings : Screen(route = ROUTE_SETTINGS)
     data object History : Screen(route = ROUTE_HISTORY)
     data object Login : Screen(route = ROUTE_LOGIN)
+    data object Signup : Screen(route = ROUTE_SIGNUP)
 
     companion object {
         fun isFullScreen(route: String?): Boolean {
