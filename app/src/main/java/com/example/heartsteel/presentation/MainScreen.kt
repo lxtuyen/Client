@@ -16,13 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.heartsteel.components.NavigationBar
-import com.example.heartsteel.components.PlayerSmall
 import com.example.heartsteel.navigation.NavigationContainer
 import com.example.heartsteel.navigation.Screen
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.navigation.RouterImpl
 import com.example.heartsteel.tools.Ext
-import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.tools.Ext.gradient
 
 @ExperimentalFoundationApi
@@ -53,12 +51,12 @@ fun MainScreen(finish: () -> Unit) {
                         )
                         .padding(top = 20.dp)
                 ) {
-                    PlayerSmall(
+                    /*PlayerSmall(
                         modifier = Modifier
                             .clickableResize {
-                                router.goPlayerFull(null)
+                                navController.navigate("${Screen.PlayerFull.route}/${123}")
                             }
-                    )
+                    )*/
                     NavigationBar(route) { target ->
                         navController.apply {
                             navigate(target) {

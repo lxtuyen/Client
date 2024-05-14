@@ -1,7 +1,6 @@
 package com.example.heartsteel.navigation
 
 import androidx.navigation.NavHostController
-import com.example.heartsteel.tools.Ext.putArgs
 
 class RouterImpl(
     private val navHostController: NavHostController,
@@ -14,10 +13,6 @@ class RouterImpl(
 
     override fun goAddPersons() {
         navigate(Screen.AddPersons)
-    }
-
-    override fun goAddPodcasts() {
-        navigate(Screen.AddPodcasts)
     }
 
     override fun goHome() {
@@ -70,6 +65,10 @@ class RouterImpl(
         navigate(Screen.PlayerFull)
     }
 
+    override fun goLib() {
+        navigate(Screen.Libs)
+    }
+
     private fun navigate(
         screen: Screen,
         removeFromHistory: Boolean = false,
@@ -93,20 +92,4 @@ class RouterImpl(
             }
         }
     }
-
-    private fun checkArgsAndNavigate(it: Any?, screen: Screen): () -> Unit = {
-        it?.let {
-            navHostController.putArgs(Pair(screen.tag, it))
-        }
-        navigate(screen)
-    }
-
-    override fun <T : Any> getArgs(tag: String): T? {
-        return try {
-            navHostController.previousBackStackEntry?.arguments?.get(tag) as T?
-        } catch (ex: Exception) {
-            null
-        }
-    }
-
 }

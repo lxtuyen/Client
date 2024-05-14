@@ -1,6 +1,6 @@
 package com.example.heartsteel.di
 
-import com.example.heartsteel.data.reponsitory.AuthRespository
+import com.example.heartsteel.domain.reponsitory.AuthRespository
 import com.example.heartsteel.data.reponsitory.AuthRespositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
@@ -19,7 +19,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesRepositoryImpl(firebaseAuth: FirebaseAuth):AuthRespository{
+    fun providesRepositoryImpl(firebaseAuth: FirebaseAuth): AuthRespository {
         return AuthRespositoryImpl(firebaseAuth)
     }
 }

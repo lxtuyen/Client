@@ -18,7 +18,7 @@ fun CardColumn(
     imageSize: Dp = 145.dp,
     round: Dp? = null,
     roundPercent: Int = 0,
-    item: Music = Music.Default,
+    item: Music,
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     verticalArrangement: Arrangement.Vertical = Arrangement.Center,
     onClick: (Music) -> Unit = {},
@@ -28,9 +28,8 @@ fun CardColumn(
         finalAlignment = Alignment.Start
     }
     val title = item.title
-    val subtitle = item.subtitle
+    val author = item.author
     val tag = item.tag
-    val description = item.description
     var paddingSubtitle = 0.dp
     if (title == null && tag == null) {
         paddingSubtitle = 8.dp
@@ -54,11 +53,8 @@ fun CardColumn(
         title?.let {
             TextTitle(text = it)
         }
-        subtitle?.let {
+        author?.let {
             TextSubtitle(text = it, modifier = Modifier.padding(top = paddingSubtitle))
-        }
-        description?.let {
-            TextSubtitle(text = it, maxLines = 5)
         }
     }
 }

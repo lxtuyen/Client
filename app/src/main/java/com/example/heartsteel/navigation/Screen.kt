@@ -11,7 +11,6 @@ import com.example.heartsteel.navigation.Routes.ROUTE_SIGNUP
 import com.example.heartsteel.navigation.Routes.ROUTE_NOTIFICATION
 import com.example.heartsteel.navigation.Routes.ROUTE_PERSONS
 import com.example.heartsteel.navigation.Routes.ROUTE_PLAYER_FULL
-import com.example.heartsteel.navigation.Routes.ROUTE_PODCASTS
 import com.example.heartsteel.navigation.Routes.ROUTE_PREMIUM
 import com.example.heartsteel.navigation.Routes.ROUTE_PROFILE
 import com.example.heartsteel.navigation.Routes.ROUTE_SEARCH
@@ -27,7 +26,6 @@ object Routes {
     const val ROUTE_HOME_DETAILS = "ROUTE_HOME_DETAILS"
     const val ROUTE_SPLASH = "ROUTE_SPLASH"
     const val ROUTE_PERSONS = "ROUTE_PERSONS"
-    const val ROUTE_PODCASTS = "ROUTE_PODCASTS"
     const val ROUTE_PLAYER_FULL = "ROUTE_PLAYER_FULL"
     const val ROUTE_NOTIFICATION = "ROUTE_NOTIFICATION"
     const val ROUTE_SETTINGS = "ROUTE_SETTINGS"
@@ -39,7 +37,6 @@ object Routes {
     val fullScreenRoutes = listOf(
         ROUTE_SPLASH,
         ROUTE_PERSONS,
-        ROUTE_PODCASTS,
         ROUTE_PLAYER_FULL,
         ROUTE_LOGIN,
         ROUTE_SIGNUP
@@ -64,7 +61,6 @@ sealed class Screen(
     data object HomeDetails : Screen(route = ROUTE_HOME_DETAILS)
     data object PlayerFull : Screen(route = ROUTE_PLAYER_FULL)
     data object AddPersons : Screen(route = ROUTE_PERSONS)
-    data object AddPodcasts : Screen(route = ROUTE_PODCASTS)
     data object Notifications : Screen(route = ROUTE_NOTIFICATION)
     data object Profile : Screen(route = ROUTE_PROFILE)
     data object Settings : Screen(route = ROUTE_SETTINGS)

@@ -11,8 +11,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.heartsteel.components.ImageCrop
-import com.example.heartsteel.R
 import com.example.heartsteel.tools.Ext.color
 import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.tools.Ext.round
@@ -21,7 +19,7 @@ import com.example.heartsteel.ui.theme.Placeholder
 @Composable
 fun SmallCardItem(
     modifier: Modifier = Modifier,
-    image: Int? = R.drawable.album,
+    image: String? = "",
     title: String = "Empty title",
     onClick: () -> Unit = {}
 ) {

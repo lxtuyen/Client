@@ -1,5 +1,6 @@
 package com.example.heartsteel.presentation.login
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,7 @@ fun LoginScreen(router: Router? = null, viewModel: SignInViewModel = hiltViewMod
     val (password, setPassword) = rememberSaveable {
         mutableStateOf("")
     }
-    val isFieldsEmpty = email.isNotEmpty() && password.isNotEmpty()
+    val isFieldsEmpty = password.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -92,8 +93,6 @@ fun LoginScreen(router: Router? = null, viewModel: SignInViewModel = hiltViewMod
             onClick = {
                 scope.launch {
                     viewModel.loginUser(email, password)
-                    router?.goHome()
-                    Toast.makeText(context, "Success Login", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth(),
@@ -112,8 +111,7 @@ fun LoginScreen(router: Router? = null, viewModel: SignInViewModel = hiltViewMod
         {
             scope.launch {
                 if (state.value?.isSuccess?.isNotEmpty() == true) {
-                    val success = state.value?.isSuccess
-                    Toast.makeText(context, "$success", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Success Login", Toast.LENGTH_SHORT).show()
                     router?.goHome()
                 }
             }

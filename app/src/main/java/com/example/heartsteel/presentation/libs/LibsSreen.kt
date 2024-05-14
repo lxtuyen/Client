@@ -1,5 +1,7 @@
 package com.example.heartsteel.presentation.libs
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,12 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,50 +24,110 @@ import com.example.heartsteel.R
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.TopBar
 import com.example.heartsteel.components.core.VerticalGrid
-import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.navigation.Router
-import com.example.heartsteel.repository.DataProvider
 import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.tools.Ext.color
 import com.example.heartsteel.tools.Ext.round
 import com.example.heartsteel.ui.theme.Sizes
-import com.example.heartsteel.ui.theme.Active
-import com.example.heartsteel.ui.theme.Primary80
-import com.example.heartsteel.ui.theme.Secondary
-import com.example.heartsteel.ui.theme.White
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import com.example.heartsteel.components.core.BaseRow
+import com.example.heartsteel.domain.model.Music
+import com.example.heartsteel.domain.model.Tabs
+import com.example.heartsteel.navigation.Screen
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @ExperimentalMaterial3Api
 @Composable
 fun LibsScreen(
     paddingValues: PaddingValues = PaddingValues(),
-    router: Router? = null
+    router: Router? = null,
+    navController: NavHostController?
 ) {
     val goAddPersons: () -> Unit = {
         router?.goAddPersons()
     }
-    val goAddPodcasts: () -> Unit = {
-        router?.goAddPodcasts()
-    }
 
-    val tracks = remember {
-        DataProvider.itemsBy(4, 20)
-    }
+    val context = LocalContext.current
+
     val chipState = remember {
         mutableIntStateOf(-1)
     }
     val chipSelected = chipState.intValue != -1
-    val chips = remember { DataProvider.tags() }
+    val tempList =remember { mutableListOf<Tabs>()}
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    val listMusic = remember { mutableListOf<Music>()}
+    val coroutineScope = rememberCoroutineScope()
+    val userId = Firebase.auth.currentUser?.uid
+    LaunchedEffect(Unit){
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                val snapshot = FirebaseDatabase.getInstance().getReference("users").child(userId.toString())
+                    .child("album").get().await()
+
+                snapshot.children.forEach { dataSnap ->
+                    val music = Music().apply {
+                        id = dataSnap.key!!
+                        title = dataSnap.child("title").value.toString()
+                        image = dataSnap.child("image").value.toString()
+                        genre = dataSnap.child("genre").value.toString()
+                        author  = dataSnap.child("author").value.toString()
+                    }
+                    listMusic.add(music)
+                }
+                isLoading = true
+            } catch (e: Exception) {
+                Log.e("NotificationsScreen", "Error fetching tabs", e)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        try {
+            val snapshot = FirebaseDatabase.getInstance().getReference("tabs").get().await()
+
+            snapshot.children.forEach { dataSnap ->
+                val tab = dataSnap.getValue(Tabs::class.java)
+                tab?.let { tempList.add(it) }
+            }
+            Log.d("NotificationsScreen", "Tabs fetched successfully: $tempList")
+        } catch (e: Exception) {
+            Log.e("NotificationsScreen", "Error fetching tabs", e)
+        }
+    }
 
     val styleState = remember {
         mutableStateOf(true)
     }
-    val isModalBottomSheetVisible = remember { mutableStateOf(false) }
 
     val isGridStyle = styleState.value
 
-    val showFilter: () -> Unit = {
-        isModalBottomSheetVisible.value = !isModalBottomSheetVisible.value
+    val deleteMusic: (Music?) -> Unit = { music ->
+        if (userId != null && music != null) {
+            FirebaseDatabase.getInstance().getReference("users").child(userId.toString())
+                .child("album").child(music.id.toString()).removeValue()
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show()
+                    router?.goLib()
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("AddMusic", "Error adding music to database", exception)
+                }
+        }
+    }
+    val goPlayer: (Music?) -> Unit = {
+        navController?.navigate("${Screen.PlayerFull.route}/${it?.id}")
     }
 
     Column {
@@ -121,15 +180,21 @@ fun LibsScreen(
                             }
                         }
                         item {
-                            val selectedChip = chips[chipState.intValue]
-                            ChipTag(selected = true, text = selectedChip) {
-                                chipState.intValue = -1
+                            val selectedChip = tempList[chipState.intValue]
+                            selectedChip.let {
+                                it.title?.let { it1 ->
+                                    ChipTag(selected = true, text = it1) {
+                                        chipState.intValue = -1
+                                    }
+                                }
                             }
                         }
                     } else {
-                        itemsIndexed(chips) { index, chip ->
-                            ChipTag(modifier = Modifier.padding(end = 8.dp), text = chip) {
-                                chipState.intValue = index
+                        itemsIndexed(tempList) { index, tab   ->
+                            tab.title?.let {
+                                ChipTag(modifier = Modifier.padding(end = 8.dp), text = it) {
+                                    chipState.intValue = index
+                                }
                             }
                         }
                     }
@@ -142,9 +207,7 @@ fun LibsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    IconBtn(resIcon = R.drawable.ic_baseline_arrow_downward_24) {
-                        showFilter()
-                    }
+                    IconBtn(resIcon = R.drawable.ic_baseline_arrow_downward_24)
                     Text(
                         text = "Recently played",
                         fontSize = 12.sp,
@@ -164,9 +227,40 @@ fun LibsScreen(
             }
 
             if (!isGridStyle) {
-                itemsIndexed(tracks) { index, person ->
+                item {
+                    GridContent(items = listMusic, goAddPersons,navController)
+                }
+            } else {
+                itemsIndexed(listMusic) { index, music ->
                     val round: Dp? = if (index % 4 == 0) null else 10.dp
-                    CardRow(60.dp, round = round, roundPercent = 100, item = person){ showFilter() }
+                    BaseRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Sizes.MEDIUM)
+                            .clickableResize {goPlayer(music)},
+                        imageSize = 50.dp,
+                        imageRes = music.image,
+                        round = round,
+                        roundPercent = 100,
+                        contentEnd = {
+                            IconBtn(
+                                resIcon = R.drawable.ic_delete_black,
+                                tint = Color.Gray,
+                                onClick = { deleteMusic(music) }
+                            )
+                        }
+                    ) {
+                        TextTitle(
+                            text = music.title ?: "title",
+                            fontSize = 22.sp
+                        )
+                        TextSubtitle(
+                            text = music.author ?: "author",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Light,
+                            color = Color.Gray
+                        )
+                    }
                 }
                 item {
                     Row(
@@ -183,7 +277,7 @@ fun LibsScreen(
                             data = R.drawable.ic_baseline_add_24,
                         )
                         Text(
-                            text = "Add artists",
+                            text = "Add Music",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(
@@ -193,57 +287,20 @@ fun LibsScreen(
                             onTextLayout = {}
                         )
                     }
-                }
-                item {
-                    Row(
-                        modifier = Modifier
-                            .padding(Sizes.MEDIUM)
-                            .clickableResize(goAddPodcasts),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        ImageCrop(
-                            modifier = Modifier
-                                .size(60.dp)
-                                .round(10.dp)
-                                .background(Color(0x33868686)),
-                            data = R.drawable.ic_baseline_add_24,
-                        )
-                        Text(
-                            text = "Add albums",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(
-                                top = Sizes.MEDIUM,
-                                start = Sizes.MEDIUM
-                            ),
-                            onTextLayout = {}
-                        )
-                    }
-                }
-            } else {
-                item {
-                    GridContent(items = tracks, goAddPersons, showFilter)
                 }
             }
         }
     }
-    if (isModalBottomSheetVisible.value) {
-        ModalBottomSheet(
-            onDismissRequest = { showFilter() },
-            modifier = Modifier.fillMaxWidth(),
-            containerColor = Secondary,
-            scrimColor = Primary80,
-        ) {
-            SheetContent()
-        }
-    }
 }
 @Composable
-fun GridContent(items: List<Music>, onClickAdd: () -> Unit, onClickView: () -> Unit ) {
+fun GridContent(items: List<Music>, onClickAdd: () -> Unit,navController: NavHostController? ) {
+    val goPlayer: (Music?) -> Unit = {
+        navController?.navigate("${Screen.PlayerFull.route}/${it?.id}")
+    }
     VerticalGrid {
         items.forEachIndexed { index, music ->
             val round: Dp? = if (index % 4 == 0) null else 10.dp
-            CardColumn(145.dp, round = round, roundPercent = 100, item = music){ onClickView() }
+            CardColumn(145.dp, round = round, roundPercent = 100, item = music, onClick = {goPlayer(music)})
         }
         Column(
             modifier = Modifier
@@ -260,32 +317,7 @@ fun GridContent(items: List<Music>, onClickAdd: () -> Unit, onClickView: () -> U
                 data = R.drawable.ic_baseline_add_24,
             )
             Text(
-                text = "Add artist",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(
-                    top = Sizes.MEDIUM,
-                    start = Sizes.MEDIUM
-                ),
-                onTextLayout = {}
-            )
-        }
-        Column(
-            modifier = Modifier
-                .clickableResize {
-                    onClickAdd()
-                },
-            horizontalAlignment = CenterHorizontally
-        ) {
-            ImageCrop(
-                modifier = Modifier
-                    .size(145.dp)
-                    .round(10.dp)
-                    .background(Color(0x33868686)),
-                data = R.drawable.ic_baseline_add_24,
-            )
-            Text(
-                text = "Add album",
+                text = "Add Music",
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(
@@ -298,66 +330,11 @@ fun GridContent(items: List<Music>, onClickAdd: () -> Unit, onClickView: () -> U
     }
 
 }
-
-@Composable
-fun SheetContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 250.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .height(4.dp)
-                .width(30.dp)
-                .round(2.dp)
-                .align(CenterHorizontally)
-                .color(Color.Gray)
-        )
-        TextTitle()
-
-        LazyColumn {
-
-            item {
-                Row {
-                    Text(
-                        "Item ",
-                        color = Active,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .weight(1f),
-                        onTextLayout = {}
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_check_24),
-                        contentDescription = null,
-                        tint = Active
-                    )
-                }
-            }
-            items(3) {
-                Text(
-                    "Item $it",
-                    color = White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp),
-                    onTextLayout = {}
-                )
-            }
-        }
-        TextTitle(
-            text = "cancel",
-            color = Color.Gray,
-            modifier = Modifier.align(CenterHorizontally)
-        )
-    }
-}
-
+/*
 @ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
 @Composable
 @Preview
 fun LibsScreenPreview() {
     LibsScreen()
-}
+}*/

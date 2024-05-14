@@ -6,16 +6,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.heartsteel.R
 import com.example.heartsteel.components.ImageCrop
 import com.example.heartsteel.tools.Ext.color
 import com.example.heartsteel.tools.Ext.round
 import com.example.heartsteel.ui.theme.Placeholder
 
 @Composable
-fun BaseRaw(
+fun BaseRow(
     modifier: Modifier = Modifier,
-    imageRes: Any? = R.drawable.album,
+    imageRes: String?,
     imageSize: Dp = 100.dp,
     round: Dp? = null,
     roundPercent: Int = 0,

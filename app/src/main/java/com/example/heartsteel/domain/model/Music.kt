@@ -1,25 +1,18 @@
 package com.example.heartsteel.domain.model
 
 import android.os.Parcelable
-import com.example.heartsteel.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Music(
-    val id: Int = 0,
-    val categoryId: Int = 0,
-    var genreId:Int = 0,
+    var id: String? = null,
+    var genre:String? = null,
     var audio: String? = null,
-    var image: Int? = null,
-    var images: List<Int>? = null,
+    var image: String? = null,
     var title: String? = null,
-    var subtitle: String? = null,
-    var description: String? = null,
+    var lyrics: String? = null,
     var tag: String? = null,
     var likes: String? = null,
-    var duration: String? = null,
+    var author: String? = null,
 ) : Parcelable {
-    companion object {
-        val Default = Music(title = "title", subtitle = "subtitle", image = R.drawable.album)
-    }
 }

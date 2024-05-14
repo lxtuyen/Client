@@ -1,5 +1,6 @@
 package com.example.heartsteel.presentation.signup
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,10 +49,11 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
     val (password, setPassword) = rememberSaveable {
         mutableStateOf("")
     }
-    val (Cpassword, setCPassword) = rememberSaveable {
+    val (cpassword, setCPassword) = rememberSaveable {
         mutableStateOf("")
     }
-    val isFieldsEmpty = email.isNotEmpty() && password.isNotEmpty()
+    val isFieldsEmpty = password.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    val isPasswordsMatch = password == cpassword
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -99,7 +101,7 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
         )
         Spacer(Modifier.height(itemSpacing))
         LoginTextField(
-            value = Cpassword,
+            value = cpassword,
             onValueChange = setCPassword,
             modifier = Modifier.fillMaxWidth(),
             labelText = "Confirm Password",
@@ -117,7 +119,7 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFieldsEmpty,
+            enabled = isFieldsEmpty && isPasswordsMatch,
         ) {
             Text("Đăng ký",color = Color.Black)
         }

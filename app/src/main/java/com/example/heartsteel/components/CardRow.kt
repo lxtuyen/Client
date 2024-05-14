@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.heartsteel.components.core.BaseRaw
+import com.example.heartsteel.components.core.BaseRow
 import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.tools.Ext.clickableResize
 import com.example.heartsteel.ui.theme.Sizes.MEDIUM
@@ -15,10 +15,10 @@ fun CardRow(
     imageSize: Dp = 55.dp,
     round: Dp? = null,
     roundPercent: Int = 0,
-    item: Music = Music.Default,
+    item: Music,
     onClick: (Music) -> Unit = {},
 ) {
-    BaseRaw(
+    BaseRow(
         modifier = Modifier
             .padding(MEDIUM)
             .clickableResize {
@@ -29,7 +29,7 @@ fun CardRow(
         round = round,
         roundPercent = roundPercent,
         content = {
-            item.subtitle?.let {
+            item.author?.let {
                 TextSubtitle(
                     text = it
                 )

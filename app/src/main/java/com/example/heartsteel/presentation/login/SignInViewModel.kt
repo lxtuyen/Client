@@ -2,7 +2,7 @@ package com.example.heartsteel.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.heartsteel.data.reponsitory.AuthRespository
+import com.example.heartsteel.domain.reponsitory.AuthRespository
 import com.example.heartsteel.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

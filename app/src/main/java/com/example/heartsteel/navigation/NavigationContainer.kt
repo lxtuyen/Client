@@ -8,12 +8,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.heartsteel.presentation.login.LoginScreen
 import com.example.heartsteel.presentation.SplashScreen
 import com.example.heartsteel.presentation.addPersons.AddPersonsScreen
-import com.example.heartsteel.presentation.addPodcasts.AddPodcastsScreen
 import com.example.heartsteel.presentation.detail.DetailsScreen
 import com.example.heartsteel.presentation.history.HistoryScreen
 import com.example.heartsteel.presentation.home.HomeScreen
@@ -45,13 +46,13 @@ fun NavigationContainer(
         startDestination = startDestination.value,
     ) {
         composable(Screen.Home.route) {
-            HomeScreen(paddingValues, router)
+            HomeScreen(paddingValues, router,navController)
         }
         composable(Screen.Search.route) {
-            SearchScreen(paddingValues)
+            SearchScreen(paddingValues,navController)
         }
         composable(Screen.Libs.route) {
-            LibsScreen(paddingValues, router)
+            LibsScreen(paddingValues, router,navController)
         }
         composable(Screen.Premium.route) {
             PremiumScreen(paddingValues)
@@ -63,12 +64,13 @@ fun NavigationContainer(
                 }
             )
         }
-        composable(Screen.HomeDetails.route) {
-            DetailsScreen(paddingValues)
+        composable(Screen.HomeDetails.route+ "/{id}",arguments = listOf(navArgument("id"){type= NavType.StringType})) {
+            val id = it.arguments?.getString("id")
+            DetailsScreen(paddingValues, id.toString(),navController)
         }
 
         composable(Screen.Notifications.route) {
-            NotificationsScreen(router, paddingValues)
+            NotificationsScreen(router, paddingValues,navController)
         }
         composable(Screen.Settings.route) {
             SettingsScreen()
@@ -79,14 +81,12 @@ fun NavigationContainer(
         composable(Screen.History.route) {
             HistoryScreen()
         }
-        composable(Screen.AddPodcasts.route) {
-            AddPodcastsScreen()
-        }
         composable(Screen.AddPersons.route) {
-            AddPersonsScreen()
+            AddPersonsScreen(router)
         }
-        composable(Screen.PlayerFull.route) {
-            PlayerFullScreen()
+        composable(Screen.PlayerFull.route+ "/{id}",arguments = listOf(navArgument("id"){type= NavType.StringType})) {
+            val id = it.arguments?.getString("id")
+            PlayerFullScreen(router, id.toString(),navController)
         }
         composable(Screen.Login.route) {
             LoginScreen(router)

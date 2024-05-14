@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-exoplayer-dash:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
     implementation ("androidx.work:work-runtime-ktx:2.9.0")
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.core:core-ktx:1.13.1")

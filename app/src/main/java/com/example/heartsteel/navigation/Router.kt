@@ -1,7 +1,6 @@
 package com.example.heartsteel.navigation
 
 interface Router {
-    fun goAddPodcasts()
     fun goAddPersons()
     fun goNotification()
     fun goSettings()
@@ -14,5 +13,5 @@ interface Router {
     fun goBack()
     fun goLogin()
     fun goSignup()
-    fun <T : Any> getArgs(tag: String): T?
+    fun goLib()
 }
