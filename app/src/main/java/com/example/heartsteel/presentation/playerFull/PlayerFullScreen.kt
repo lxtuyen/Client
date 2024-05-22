@@ -8,9 +8,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +37,6 @@ import com.example.heartsteel.tools.Ext
 import com.example.heartsteel.tools.Ext.gradient
 import com.example.heartsteel.tools.Ext.round
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
@@ -55,7 +52,6 @@ import kotlinx.coroutines.tasks.await
 @OptIn(UnstableApi::class)
 @Composable
 fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: NavHostController?) {
-    val scrollState = rememberScrollState()
     val goBack: () -> Unit = {
         router?.goHome()
     }
@@ -134,7 +130,10 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
         }
 
         val playWhenReady = rememberSaveable { mutableStateOf(true) }
-
+        val styleState = remember {
+            mutableStateOf(true)
+        }
+        val isGridStyle = playWhenReady.value
         LaunchedEffect(key1 = idMusic) {
             exoPlayer.prepare()
             exoPlayer.playWhenReady = playWhenReady.value
@@ -146,21 +145,16 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
         }
         //var isPlaying = true
         fun handlePause() {
-            Log.e("NotificationsScreen", "Error fetching musics ${exoPlayer.playWhenReady}")
             exoPlayer.playWhenReady = !exoPlayer.playWhenReady
-            //isPlaying = false
+            playWhenReady.value = !playWhenReady.value
         }
         fun handleStart() {
-            //exoPlayer.play()
             exoPlayer.playWhenReady = !exoPlayer.playWhenReady
-            //isPlaying = true
+            playWhenReady.value = !playWhenReady.value
         }
-        val isPlaying by remember { derivedStateOf { exoPlayer.playWhenReady } }
-
         Column(
             Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .gradient(
                     listOf(Color.Red, Color.Transparent, Color.Transparent),
                     Ext.GradientType.VERTICAL
@@ -199,13 +193,6 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
                             }
                         })
                 }
-                /*PlayerFull(
-                    onPlayPause= { exoPlayer.pause() },
-                    onSkipBack= { onSkipForward() },
-                    onSkipForward= { onSkipForward() },
-                    onPlayStart = { exoPlayer.play()},
-                    exoplayer = exoPlayer
-                )*/
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                     IconBtn(resIcon = R.drawable.ic_h_outline)
                     IconBtn(
@@ -220,7 +207,7 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
                             .color(Color.White),
                         contentAlignment = Alignment.Center
                     ) {
-                        if (isPlaying){
+                        if (isGridStyle){
                         IconBtn(resIcon = R.drawable.ic_player_pause, tint = Color.Black, onClick = {handlePause()})
                     } else {
                         IconBtn(resIcon = R.drawable.ic_player_play, tint = Color.Black, onClick = {handleStart() })
@@ -240,15 +227,6 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconBtn(resIcon = R.drawable.ic_sound)
-                        Spacer(modifier = Modifier.weight(2f))
-                        IconBtn(resIcon = R.drawable.ic_baseline_share_24)
-                    }
-
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -256,7 +234,6 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
                             .round(8.dp)
                             .background(Color.Red)
                             .padding(20.dp),
-
                     ) {
                         item{
                             Text(
@@ -272,7 +249,7 @@ fun PlayerFullScreen(router: Router? = null, idMusic: String?, navController: Na
                                 text = lyricMusic,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 24.sp,
-                                maxLines = 10,
+                                maxLines = 100,
                                 modifier = Modifier.padding(vertical = 20.dp),
                                 onTextLayout = {}
                             )

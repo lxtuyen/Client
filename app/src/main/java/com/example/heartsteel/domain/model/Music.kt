@@ -15,4 +15,7 @@ data class Music(
     var likes: String? = null,
     var author: String? = null,
 ) : Parcelable {
+    fun doesMatchSearchQuery(query: String): Boolean {
+        return title!!.contains(query, ignoreCase = true)
+    }
 }

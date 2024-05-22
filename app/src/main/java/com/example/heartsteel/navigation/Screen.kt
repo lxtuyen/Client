@@ -13,6 +13,7 @@ import com.example.heartsteel.navigation.Routes.ROUTE_PERSONS
 import com.example.heartsteel.navigation.Routes.ROUTE_PLAYER_FULL
 import com.example.heartsteel.navigation.Routes.ROUTE_PREMIUM
 import com.example.heartsteel.navigation.Routes.ROUTE_PROFILE
+import com.example.heartsteel.navigation.Routes.ROUTE_REELS
 import com.example.heartsteel.navigation.Routes.ROUTE_SEARCH
 import com.example.heartsteel.navigation.Routes.ROUTE_SETTINGS
 import com.example.heartsteel.navigation.Routes.ROUTE_SPLASH
@@ -22,6 +23,7 @@ object Routes {
     const val ROUTE_HOME = "ROUTE_HOME"
     const val ROUTE_SEARCH = "ROUTE_SEARCH"
     const val ROUTE_LIBS = "ROUTE_LIBS"
+    const val ROUTE_REELS = "ROUTE_REELS"
     const val ROUTE_PREMIUM = "ROUTE_PREMIUM"
     const val ROUTE_HOME_DETAILS = "ROUTE_HOME_DETAILS"
     const val ROUTE_SPLASH = "ROUTE_SPLASH"
@@ -55,7 +57,7 @@ sealed class Screen(
     data object Libs :
         Screen(route = ROUTE_LIBS, title = "Your Library", icon = R.drawable.ic_library_big)
 
-    data object Premium : Screen(route = ROUTE_PREMIUM, title = "Premium", icon = R.drawable.ic_premium)
+    data object Reel : Screen(route = ROUTE_REELS, title = "Short Video", icon = R.drawable.ic_premium)
 
     data object Splash : Screen(route = ROUTE_SPLASH)
     data object HomeDetails : Screen(route = ROUTE_HOME_DETAILS)
@@ -73,5 +75,4 @@ sealed class Screen(
             return fullScreenRoutes.contains(route)
         }
     }
-
 }

@@ -23,7 +23,7 @@ fun NavigationBar(
             Screen.Home,
             Screen.Search,
             Screen.Libs,
-            Screen.Premium
+            Screen.Reel
         )
     }
     BottomNavigation(

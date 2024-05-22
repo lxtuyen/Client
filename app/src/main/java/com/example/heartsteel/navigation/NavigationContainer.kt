@@ -14,17 +14,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.heartsteel.presentation.login.LoginScreen
 import com.example.heartsteel.presentation.SplashScreen
-import com.example.heartsteel.presentation.addPersons.AddPersonsScreen
+import com.example.heartsteel.presentation.addMusic.AddPersonsScreen
 import com.example.heartsteel.presentation.detail.DetailsScreen
 import com.example.heartsteel.presentation.history.HistoryScreen
 import com.example.heartsteel.presentation.home.HomeScreen
 import com.example.heartsteel.presentation.libs.LibsScreen
 import com.example.heartsteel.presentation.notifications.NotificationsScreen
 import com.example.heartsteel.presentation.playerFull.PlayerFullScreen
-import com.example.heartsteel.presentation.premium.PremiumScreen
-import com.example.heartsteel.presentation.profile.ProfileScreen
+import com.example.heartsteel.presentation.reel.ReelScreen
 import com.example.heartsteel.presentation.search.SearchScreen
-import com.example.heartsteel.presentation.settings.SettingsScreen
 import com.example.heartsteel.presentation.signup.SignupScreen
 
 @ExperimentalFoundationApi
@@ -54,8 +52,8 @@ fun NavigationContainer(
         composable(Screen.Libs.route) {
             LibsScreen(paddingValues, router,navController)
         }
-        composable(Screen.Premium.route) {
-            PremiumScreen(paddingValues)
+        composable(Screen.Reel.route) {
+            ReelScreen()
         }
         composable(Screen.Splash.route) {
             SplashScreen(
@@ -71,12 +69,6 @@ fun NavigationContainer(
 
         composable(Screen.Notifications.route) {
             NotificationsScreen(router, paddingValues,navController)
-        }
-        composable(Screen.Settings.route) {
-            SettingsScreen()
-        }
-        composable(Screen.Profile.route) {
-            ProfileScreen()
         }
         composable(Screen.History.route) {
             HistoryScreen()

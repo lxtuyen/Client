@@ -50,7 +50,6 @@ fun SearchBar(
             modifier = Modifier
                 .padding(horizontal = DEFAULT)
                 .weight(2f),
-
             placeholder = { Text(placeholder)},
             singleLine = true,
             textStyle = TextStyle(

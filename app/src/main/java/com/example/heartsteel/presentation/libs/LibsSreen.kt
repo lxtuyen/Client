@@ -157,8 +157,8 @@ fun LibsScreen(
                 )
             },
             actions = {
-                IconBtn(resIcon = R.drawable.ic_search_small)
-                IconBtn(resIcon = R.drawable.ic_baseline_add_24)
+                IconBtn(resIcon = R.drawable.ic_search_small, onClick = goAddPersons)
+                IconBtn(resIcon = R.drawable.ic_baseline_add_24, onClick = goAddPersons)
             }
         )
         LazyColumn(
