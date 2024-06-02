@@ -12,8 +12,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -22,7 +25,7 @@ import androidx.navigation.NavHostController
 import com.example.heartsteel.components.*
 import com.example.heartsteel.components.core.VerticalGrid
 import com.example.heartsteel.domain.model.Music
-import com.example.heartsteel.domain.model.Albums
+import com.example.heartsteel.domain.model.Category
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.navigation.Screen
 import com.example.heartsteel.ui.theme.Sizes
@@ -34,22 +37,17 @@ import kotlinx.coroutines.tasks.await
 @ExperimentalFoundationApi
 @Composable
 fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? = null,navController: NavHostController?) {
-    /*val categories = remember {
-        DataProvider.categoriesBy()
-    }*/
-    val albums = remember { mutableListOf<Albums>()}
+    val albums = remember { mutableListOf<Category>()}
     val musicsNew = remember { mutableListOf<Music>()}
     val coroutineScope = rememberCoroutineScope()
+    var isLoading by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         try {
-            val snapshot = FirebaseDatabase.getInstance().getReference("albums").get().await()
+            val snapshot = FirebaseDatabase.getInstance().getReference("categories").get().await()
             snapshot.children.forEach { dataSnap ->
-                val album = Albums()
+                val album = Category()
                 album.id = dataSnap.key!!
                 album.title = dataSnap.child("title").value.toString()
-                album.subtitle = dataSnap.child("subtitle").value.toString()
-                album.author = dataSnap.child("author").value.toString()
-                album.imageRes = dataSnap.child("image").value.toString()
 
                 val a = dataSnap.child("tracks")
                 if (a.exists()) {
@@ -71,9 +69,10 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
                     album.data = trackList
                 }
                 albums.add(album)
+                isLoading = true
             }
         } catch (e: Exception) {
-            Log.e("NotificationsScreen", "Error fetching tabs", e)
+            Log.e("NotificationsScreen", "Error fetching categories", e)
         }
     }
     LaunchedEffect(Unit){
@@ -95,11 +94,11 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
                     musicsNew.add(music)
                 }
             } catch (e: Exception) {
-                Log.e("NotificationsScreen", "Error fetching tabs", e)
+                Log.e("NotificationsScreen", "Error fetching musics", e)
             }
         }
     }
-    val goDetails: (Albums?) -> Unit = {
+    val goDetails: (Category?) -> Unit = {
         navController?.navigate("${Screen.HomeDetails.route}/${it?.id}")
     }
     val goPlayer: (Music?) -> Unit = {
@@ -173,10 +172,3 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
         }
     }
 }
-/*
-@ExperimentalFoundationApi
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(navController = NavHostController())
-}*/

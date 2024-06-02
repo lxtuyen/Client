@@ -9,8 +9,4 @@ data class Reels (
     var url:String? = null,
     var author: String? = null,
     var caption:String? = null,
-    ) : Parcelable {
-    companion object {
-        val Default = Reels(caption = "empty caption", author = "author")
-    }
-}
+    ) : Parcelable

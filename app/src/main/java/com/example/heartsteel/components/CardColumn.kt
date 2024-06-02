@@ -29,9 +29,9 @@ fun CardColumn(
     }
     val title = item.title
     val author = item.author
-    val tag = item.tag
+    val genre = item.genre
     var paddingSubtitle = 0.dp
-    if (title == null && tag == null) {
+    if (title == null && genre == null) {
         paddingSubtitle = 8.dp
     }
     BaseColumn(
@@ -47,7 +47,7 @@ fun CardColumn(
         verticalArrangement = verticalArrangement,
     ) {
 
-        tag?.let {
+        genre?.let {
             TextTag(text = it, modifier = Modifier.padding(top = 8.dp))
         }
         title?.let {

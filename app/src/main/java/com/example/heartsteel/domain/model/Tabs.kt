@@ -7,5 +7,4 @@ import android.os.Parcelable
 data class Tabs (
     val id: Int = 0,
     val title: String? = null,
-) : Parcelable {
-}
+) : Parcelable

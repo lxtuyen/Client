@@ -12,8 +12,4 @@ data class User(
     val profilePictureUrl: String?= null,
     var albums: List<Music> = emptyList(),
     var history: List<Music> = emptyList(),
-) : Parcelable {
-    companion object {
-        val Default = User(email = "", password = "")
-    }
-}
+) : Parcelable
