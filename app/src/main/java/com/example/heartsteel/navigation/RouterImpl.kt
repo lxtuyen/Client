@@ -19,8 +19,8 @@ class RouterImpl(
         navigate(Screen.Home, removeFromHistory = true, singleTop = true)
     }
 
-    override fun goHistory() {
-        navigate(Screen.History)
+    override fun goSearchTag() {
+        navigate(Screen.SearchTag)
     }
 
     override fun goBack() {

@@ -130,7 +130,7 @@ fun AddPersonsScreen(router: Router? = null) {
 
         LazyVerticalGrid(
             state = LazyGridState(0),
-            modifier = Modifier.padding(top = 70.dp),
+            modifier = Modifier.padding(top = 70.dp,start = 10.dp),
             contentPadding = PaddingValues(top = 130.dp, bottom = 80.dp),
             columns = GridCells.Fixed(1)
         ) {

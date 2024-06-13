@@ -6,10 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,10 +59,6 @@ fun LibsScreen(
 
     val context = LocalContext.current
 
-    val chipState = remember {
-        mutableIntStateOf(-1)
-    }
-    val chipSelected = chipState.intValue != -1
     val tempList =remember { mutableListOf<Tabs>()}
 
     var isLoading by remember { mutableStateOf(false) }
@@ -78,7 +74,7 @@ fun LibsScreen(
 
                 snapshot.children.forEach { dataSnap ->
                     val music = Music().apply {
-                        id = dataSnap.key!!
+                        id = dataSnap.child("id").value.toString()
                         title = dataSnap.child("title").value.toString()
                         image = dataSnap.child("image").value.toString()
                         genre = dataSnap.child("genre").value.toString()
@@ -129,6 +125,9 @@ fun LibsScreen(
     val goPlayer: (Music?) -> Unit = {
         navController?.navigate("${Screen.PlayerFull.route}/${it?.id}")
     }
+    val goSearchTag: (Tabs?) -> Unit = {
+        navController?.navigate("${Screen.SearchTag.route}/${it?.title}")
+    }
 
     Column {
         TopBar(
@@ -173,30 +172,12 @@ fun LibsScreen(
                     contentPadding = PaddingValues(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (chipSelected) {
-                        item {
-                            BorderBtn(modifier = Modifier.padding(end = 8.dp)) {
-                                chipState.intValue = -1
-                            }
-                        }
-                        item {
-                            val selectedChip = tempList[chipState.intValue]
-                            selectedChip.let {
-                                it.title?.let { it1 ->
-                                    ChipTag(selected = true, text = it1) {
-                                        chipState.intValue = -1
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        itemsIndexed(tempList) { index, tab   ->
+
+                        items(tempList) { tab   ->
                             tab.title?.let {
-                                ChipTag(modifier = Modifier.padding(end = 8.dp), text = it) {
-                                    chipState.intValue = index
-                                }
+                                ChipTag(modifier = Modifier.padding(end = 8.dp), text = it, onChipSelected = {goSearchTag(tab)})
                             }
-                        }
+
                     }
                 }
             }

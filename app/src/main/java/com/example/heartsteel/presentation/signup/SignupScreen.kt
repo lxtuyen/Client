@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -37,7 +38,9 @@ import com.example.heartsteel.components.TextTitle
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.presentation.login.defaultPadding
 import com.example.heartsteel.presentation.login.itemSpacing
+import com.example.heartsteel.ui.theme.Notification
 import kotlinx.coroutines.launch
+
 @Composable
 fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewModel()) {
     val (email, setEmail) = rememberSaveable {
@@ -71,7 +74,8 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
     ) {
         TextTitle(
             text = "Đăng Ký",
-            modifier = Modifier.padding(vertical = defaultPadding)
+            modifier = Modifier
+                .padding(vertical = defaultPadding)
                 .align(alignment = Alignment.Start)
         )
         LoginTextField(
@@ -111,17 +115,20 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
         )
         Spacer(Modifier.height(itemSpacing))
         Button(
-            onClick =  {
+            onClick = {
                 scope.launch {
-                    viewModel.registerUser(email,password,username)
+                    viewModel.registerUser(email, password, username)
                     router?.goLogin()
-                    Toast.makeText(context,"Success Signup",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Success Signup", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Notification
+            ),
             enabled = isFieldsEmpty && isPasswordsMatch,
         ) {
-            Text("Đăng ký",color = Color.Black)
+            Text("Đăng ký", color = Color.Black)
         }
         Spacer(Modifier.height(itemSpacing))
         AlternativeLoginOptions(
@@ -130,24 +137,22 @@ fun SignupScreen(router: Router? = null, viewModel: SignUpViewModel = hiltViewMo
                 .fillMaxSize()
                 .wrapContentSize(align = Alignment.TopCenter)
         )
-        LaunchedEffect(key1 = state.value?.isSuccess )
+        LaunchedEffect(key1 = state.value?.isSuccess)
         {
             scope.launch {
-                if(state.value?.isSuccess?.isNotEmpty()==true)
-                {
+                if (state.value?.isSuccess?.isNotEmpty() == true) {
                     val success = state.value?.isSuccess
-                    Toast.makeText(context,"$success",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "$success", Toast.LENGTH_SHORT).show()
                     router?.goLogin()
                 }
             }
         }
-        LaunchedEffect(key1 = state.value?.isError )
+        LaunchedEffect(key1 = state.value?.isError)
         {
             scope.launch {
-                if(state.value?.isError?.isNotEmpty()==true)
-                {
+                if (state.value?.isError?.isNotEmpty() == true) {
                     val error = state.value?.isError
-                    Toast.makeText(context,"$error",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "$error", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -171,7 +176,7 @@ fun AlternativeLoginOptions(
         Text("Already have an account", color = Color.White)
         Spacer(Modifier.height(itemSpacing))
         TextButton(onClick = onSignInClick) {
-            Text("Sign Ip")
+            Text("Sign Up", color = Notification)
         }
     }
 }

@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.heartsteel.components.IconBtn
 import com.example.heartsteel.R
 import com.example.heartsteel.ui.theme.Sizes.DEFAULT
 import com.example.heartsteel.ui.theme.Sizes.SMALL
@@ -20,7 +19,7 @@ import com.example.heartsteel.ui.theme.Notification
 @Composable
 fun TopAppBar(
     modifier: Modifier = Modifier,
-    title: String = "Good evening",
+    title: String = "Xin chào buổi sáng",
     onActionClicked: (pos: Int) -> Unit = {},
 ) {
     Row(

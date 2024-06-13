@@ -4,7 +4,7 @@ interface Router {
     fun goAddPersons()
     fun goNotification()
     fun goSettings()
-    fun goHistory()
+    fun goSearchTag()
     fun goProfile()
     fun goDetails(arg: Any?)
     fun goPlayerFull(arg: Any?)

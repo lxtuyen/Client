@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import com.example.heartsteel.components.LoginTextField
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.heartsteel.components.TextTitle
 import com.example.heartsteel.navigation.Router
+import com.example.heartsteel.ui.theme.Notification
 import kotlinx.coroutines.launch
 
 val defaultPadding = 16.dp
@@ -97,6 +99,9 @@ fun LoginScreen(router: Router? = null, viewModel: SignInViewModel = hiltViewMod
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = isFieldsEmpty,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Notification
+            ),
         ) {
             Text("Đăng nhập", color = Color.Black)
         }
@@ -140,7 +145,7 @@ fun AlternativeLoginOptions(
         Text("Don't have an Account?", color = Color.White)
         Spacer(Modifier.height(itemSpacing))
         TextButton(onClick = onSignUpClick) {
-            Text("Sign Up")
+            Text("Sign Up",color = Notification)
         }
     }
 }

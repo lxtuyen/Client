@@ -245,9 +245,3 @@ fun PlayBtn(modifier: Modifier = Modifier) {
         )
     }
 }
-/*
-@Preview
-@Composable
-fun DetailsScreenPreview() {
-    DetailsScreen(idAlbum = String())
-}*/

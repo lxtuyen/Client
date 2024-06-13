@@ -79,7 +79,7 @@ fun ReelsList() {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 val fetchedReel = mutableListOf<Reels>()
-                val snapshot = FirebaseDatabase.getInstance().getReference("reels").get().await()
+                val snapshot = FirebaseDatabase.getInstance().getReference("reels").limitToLast(2).get().await()
                 snapshot.children.forEach { dataSnap ->
 
                     val reel = Reels().apply {

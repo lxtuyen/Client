@@ -16,7 +16,7 @@ import com.example.heartsteel.presentation.login.LoginScreen
 import com.example.heartsteel.presentation.SplashScreen
 import com.example.heartsteel.presentation.addMusic.AddPersonsScreen
 import com.example.heartsteel.presentation.detail.DetailsScreen
-import com.example.heartsteel.presentation.history.HistoryScreen
+import com.example.heartsteel.presentation.searchTag.SearchTagScreen
 import com.example.heartsteel.presentation.home.HomeScreen
 import com.example.heartsteel.presentation.libs.LibsScreen
 import com.example.heartsteel.presentation.notifications.NotificationsScreen
@@ -70,8 +70,9 @@ fun NavigationContainer(
         composable(Screen.Notifications.route) {
             NotificationsScreen(router, paddingValues,navController)
         }
-        composable(Screen.History.route) {
-            HistoryScreen()
+        composable(Screen.SearchTag.route+ "/{tag}",arguments = listOf(navArgument("tag"){type= NavType.StringType})) {
+            val id = it.arguments?.getString("tag")
+            SearchTagScreen(router, id.toString(), paddingValues,navController)
         }
         composable(Screen.AddPersons.route) {
             AddPersonsScreen(router)

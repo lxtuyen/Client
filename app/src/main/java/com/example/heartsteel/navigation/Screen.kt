@@ -2,7 +2,7 @@ package com.example.heartsteel.navigation
 
 import androidx.annotation.DrawableRes
 import com.example.heartsteel.R
-import com.example.heartsteel.navigation.Routes.ROUTE_HISTORY
+import com.example.heartsteel.navigation.Routes.ROUTE_SEARCH_TAG
 import com.example.heartsteel.navigation.Routes.ROUTE_HOME
 import com.example.heartsteel.navigation.Routes.ROUTE_HOME_DETAILS
 import com.example.heartsteel.navigation.Routes.ROUTE_LIBS
@@ -29,7 +29,7 @@ object Routes {
     const val ROUTE_PLAYER_FULL = "ROUTE_PLAYER_FULL"
     const val ROUTE_NOTIFICATION = "ROUTE_NOTIFICATION"
     const val ROUTE_SETTINGS = "ROUTE_SETTINGS"
-    const val ROUTE_HISTORY = "ROUTE_HISTORY"
+    const val ROUTE_SEARCH_TAG = "ROUTE_SEARCH_TAG"
     const val ROUTE_PROFILE = "ROUTE_PROFILE"
     const val ROUTE_LOGIN = "ROUTE_LOGIN"
     const val ROUTE_SIGNUP = "ROUTE_SIGNUP"
@@ -63,7 +63,7 @@ sealed class Screen(
     data object Notifications : Screen(route = ROUTE_NOTIFICATION)
     data object Profile : Screen(route = ROUTE_PROFILE)
     data object Settings : Screen(route = ROUTE_SETTINGS)
-    data object History : Screen(route = ROUTE_HISTORY)
+    data object SearchTag : Screen(route = ROUTE_SEARCH_TAG)
     data object Login : Screen(route = ROUTE_LOGIN)
     data object Signup : Screen(route = ROUTE_SIGNUP)
 
