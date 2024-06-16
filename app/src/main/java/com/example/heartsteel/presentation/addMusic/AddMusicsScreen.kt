@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,7 +18,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,13 +31,8 @@ import com.example.heartsteel.components.core.BaseRow
 import com.example.heartsteel.domain.model.Music
 import com.example.heartsteel.navigation.Router
 import com.example.heartsteel.presentation.search.SearchViewModel
-import com.example.heartsteel.tools.Ext
-import com.example.heartsteel.tools.Ext.color
-import com.example.heartsteel.tools.Ext.gradient
 import com.example.heartsteel.tools.Ext.offsetY
-import com.example.heartsteel.tools.Ext.round
 import com.example.heartsteel.ui.theme.Sizes
-import com.example.heartsteel.ui.theme.Primary30
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
@@ -101,33 +94,6 @@ fun AddPersonsScreen(router: Router? = null) {
     val contentHeight = 100.dp
     val offsetY = scrollState.offsetY(contentHeight)
     Box {
-        Column(
-            modifier = Modifier
-                .offset(y = -offsetY)
-                .alpha(if (offsetY > 0.dp) 0.5f else 1f)
-        ) {
-            Box(
-                modifier = Modifier
-                    .height(contentHeight)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.BottomStart
-            ) {
-
-                TextTitle(
-                    modifier = Modifier.padding(Sizes.DEFAULT),
-                    text = "Search Musics",
-                )
-            }
-            SearchBar(
-                modifier = Modifier
-                    .padding(Sizes.MEDIUM)
-                    .height(60.dp),
-                onValueChange = { viewModel.onSearchTextChange(it) },
-                value = searchText,
-                placeholder = "search"
-            )
-        }
-
         LazyVerticalGrid(
             state = LazyGridState(0),
             modifier = Modifier.padding(top = 70.dp,start = 10.dp),
@@ -163,28 +129,30 @@ fun AddPersonsScreen(router: Router? = null) {
                 }
             }
         }
-        Box(
+        Column(
             modifier = Modifier
-                .height(150.dp)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .gradient(
-                    listOf(Color.Transparent, Primary30),
-                    Ext.GradientType.VERTICAL
-                )
+                .offset(y = -offsetY)
+                .alpha(if (offsetY > 0.dp) 0.5f else 1f)
         ) {
-            Text(
+            Box(
                 modifier = Modifier
-                    .width(100.dp)
-                    .align(Alignment.BottomCenter)
-                    .padding(vertical = 10.dp)
-                    .round(100)
-                    .color(Color.White)
-                    .padding(vertical = 10.dp, horizontal = 20.dp),
-                textAlign = TextAlign.Center,
-                text = "title",
-                fontWeight = FontWeight.Bold,
-                onTextLayout = {}
+                    .height(contentHeight)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.BottomStart
+            ) {
+
+                TextTitle(
+                    modifier = Modifier.padding(Sizes.DEFAULT),
+                    text = "Search Musics",
+                )
+            }
+            SearchBar(
+                modifier = Modifier
+                    .padding(Sizes.MEDIUM)
+                    .height(60.dp),
+                onValueChange = { viewModel.onSearchTextChange(it) },
+                value = searchText,
+                placeholder = "Tìm Kiếm"
             )
         }
     }

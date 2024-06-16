@@ -101,10 +101,7 @@ fun SearchScreen(
         SearchBar(
             modifier = Modifier
                 .padding(Sizes.MEDIUM)
-                .height(60.dp)
-                .clickableResize {
-
-                },
+                .height(60.dp),
             onValueChange = { viewModel.onSearchTextChange(it) },
             value = searchText,
             placeholder = "Tìm Kiếm"

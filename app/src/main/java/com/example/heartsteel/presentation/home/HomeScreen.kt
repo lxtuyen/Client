@@ -69,8 +69,8 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
                     album.data = trackList
                 }
                 albums.add(album)
-                isLoading = true
             }
+            isLoading = true
         } catch (e: Exception) {
             Log.e("NotificationsScreen", "Error fetching categories", e)
         }
@@ -93,6 +93,7 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
                     }
                     musicsNew.add(music)
                 }
+                isLoading = true
             } catch (e: Exception) {
                 Log.e("NotificationsScreen", "Error fetching musics", e)
             }
@@ -108,7 +109,7 @@ fun HomeScreen(paddingValues: PaddingValues = PaddingValues(), router: Router? =
     val actionClicked: (index: Int) -> Unit = {
         when (it) {
             0 -> router?.goNotification()
-            1 -> router?.goHistory()
+            1 -> router?.goSearchTag()
             2 -> router?.goSettings()
         }
     }

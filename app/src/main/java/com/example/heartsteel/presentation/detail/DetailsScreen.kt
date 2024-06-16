@@ -65,6 +65,7 @@ fun DetailsScreen(
 
                 snapshot.children.forEach { dataSnap ->
                     val music = Music().apply {
+                        id = dataSnap.key!!
                         title = dataSnap.child("title").value.toString()
                         image = dataSnap.child("image").value.toString()
                     }
@@ -78,7 +79,7 @@ fun DetailsScreen(
     LaunchedEffect(idAlbum) {
         try {
             val snapshot =
-                FirebaseDatabase.getInstance().getReference("albums").child(idAlbum.toString())
+                FirebaseDatabase.getInstance().getReference("categories").child(idAlbum.toString())
                     .get().await()
                 titleAlbum = snapshot.child("title").value.toString()
                 authorAlbum = snapshot.child("author").value.toString()
@@ -88,7 +89,7 @@ fun DetailsScreen(
                 if (a.exists()) {
                     a.children.forEach { trackDataSnap ->
                         val music = Music().apply {
-                            id = trackDataSnap.key!!
+                            id = trackDataSnap.child("musicId").value.toString()
                             title = trackDataSnap.child("title").value.toString()
                             image = trackDataSnap.child("image").value.toString()
                             genre = trackDataSnap.child("genre").value.toString()
@@ -191,7 +192,7 @@ fun DetailsScreen(
                     .fillMaxWidth(),
             ) {
                 listMusic.forEach {
-                    CardColumn(roundPercent = 100, item = it)
+                    CardColumn(roundPercent = 100, item = it, onClick = {goPlayer(it)})
                 }
             }
         }
